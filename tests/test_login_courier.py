@@ -11,7 +11,7 @@ class TestLoginCourier:
     @allure.title('Проверка авторизации курьера с валидными данными') 
     @allure.description('Отправляем запрос на авторизацию в сервисе, проверяем ответ и удаляем курьера')
     def test_courier_login_success(self, courier):
-        courier_data = courier
+        courier_data = Courier().courier_registration_in_the_system_and_get_courier_data()
         response = Courier().courier_login_in_the_system_and_get_id_courier(courier_data["data"])
         assert response["status_code"] == 200
         assert response.get("id")

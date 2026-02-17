@@ -6,9 +6,11 @@ class TestDeleteCourier:
 
     @allure.title('Проверка удаления курьера') 
     @allure.description('Отправляем запрос на удаление курьера и проверяем ответ')
-    def test_delete_courier_success(self, courier_delete):
-        courier_id = courier_delete
-        response = Courier().courier_subsequent_deletion(courier_id["id"])
+    def test_delete_courier_success(self):
+        courier_api = Courier()
+        courier_data = courier_api.courier_registration_in_the_system_and_get_courier_data()["data"]
+        courier_id = courier_api.courier_login_in_the_system_and_get_id_courier(courier_data)["id"]
+        response = courier_api.courier_subsequent_deletion(courier_id)
         assert response["status_code"] == 200
         assert response["response_text"] == '{"ok":true}'
 

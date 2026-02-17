@@ -4,16 +4,20 @@ import requests
 from helps import DataCourier
 from endpoints import Endpoints
 from urls import Urls
+from helps import DataCreateCourier
 
 
 class TestCreateCourier:
 
     @allure.title('Проверка создания нового курьера') 
     @allure.description('Отправляем запрос на создание курьера, проверяем ответ и удаляем созданного курьера')
-    def test_registration_courier_success(self, courier):
-        courier_data = courier
-        assert courier_data["status_code"] == 201
-        assert courier_data["response_text"] == '{"ok":true}'
+    def test_registration_courier_success(self):
+        data = DataCreateCourier.generating_fake_valid_data_to_create_courier()
+        response_body = '{"ok":true}'
+        response = requests.post(
+        f'{Urls.QA_SCOOTER_URL}{Endpoints.create_courier}',data=data)
+        assert response.status_code == 201
+        assert response.text == response_body
 
     @allure.title('Проверка ошибки при создании двух одинаковых курьеров')
     @allure.description('Отправляем повторный запрос на создание курьера, проверяем ответ и удаляем курьера')
