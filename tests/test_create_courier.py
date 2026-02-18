@@ -1,7 +1,7 @@
 import allure
 import pytest
 import requests
-from helps import DataCourier
+from helps import DataCourier, DataCreateCourier, Courier
 from endpoints import Endpoints
 from urls import Urls
 from helps import DataCreateCourier
@@ -18,6 +18,9 @@ class TestCreateCourier:
         f'{Urls.QA_SCOOTER_URL}{Endpoints.create_courier}',data=data)
         assert response.status_code == 201
         assert response.text == response_body
+        # очистка БД
+        courier_id = Courier().courier_login_in_the_system_and_get_id_courier(data)["id"]
+        Courier().courier_subsequent_deletion(courier_id)
 
     @allure.title('Проверка ошибки при создании двух одинаковых курьеров')
     @allure.description('Отправляем повторный запрос на создание курьера, проверяем ответ и удаляем курьера')
